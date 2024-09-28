@@ -65,3 +65,10 @@ body {
 .comment-highlighted {
   color: #223930; /* Darker color for comments */
 }
+
+.mouse-tracker {
+  position: absolute;
+  pointer-events: none;
+  visibility: hidden;
+  z-index: 9999; /* Make sure it's on top of other elements */
+}
