@@ -32,7 +32,7 @@ class Function(BaseModel):
     
     
     func_signature: Optional[str] = None
-    func_body: Optional[str] = None
+    func_body_wo_brackets: Optional[str] = None
     func_subcalls: List[Optional[str]]
 
 class Functions(BaseModel):

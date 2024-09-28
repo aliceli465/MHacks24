@@ -5,7 +5,7 @@ class Functions {
 
 class Function {
   func_signature string
-  func_body string
+  func_body_wo_brackets string
   func_subcalls string[]
 }
 

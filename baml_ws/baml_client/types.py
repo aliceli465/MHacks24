@@ -23,7 +23,7 @@ class Function(BaseModel):
     
     
     func_signature: str
-    func_body: str
+    func_body_wo_brackets: str
     func_subcalls: List[str]
 
 class Functions(BaseModel):
