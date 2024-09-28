@@ -1,42 +1,34 @@
-import React from "react";
-import VscodeEditor from "./components/vscodeeditor";
+import React, { useState } from "react";
+import VscodeEditor from "./components/VscodeEditor";
 import "./App.css"; // Custom styles
 
-const code1 = `
-// Sample C code 1
-#include <stdio.h>
-
-int main() {
-    printf("Hello, World!");
-    return 0;
-}
-`;
-
-const code2 = `
-// Sample C code 2
-#include <stdio.h>
-
-int add(int a, int b) {
-    return a + b;
-}
-
-int main() {
-    int sum = add(2, 3);
-    printf("Sum: %d", sum);
-    return 0;
-}
-`;
-
 const App = () => {
+  const [fileContent, setFileContent] = useState("");
+
+  const handleImportClick = async (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => setFileContent(e.target.result);
+      reader.readAsText(file);
+    }
+  };
+
   return (
     <div className="app-container">
       <header className="header">VSCode Themed Code Profiler</header>
+      <div className="toolbar">
+        <label className="import-button">
+          Import File
+          <input type="file" onChange={handleImportClick} style={{ display: "none" }} />
+        </label>
+      </div>
       <div className="editors-wrapper">
         <div className="editor-half">
-          <VscodeEditor code={code1} />
+          <VscodeEditor code={fileContent} />
         </div>
         <div className="editor-half">
-          <VscodeEditor code={code2} />
+          <VscodeEditor code={"// Right window"} />
         </div>
       </div>
     </div>

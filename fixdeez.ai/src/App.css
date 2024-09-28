@@ -13,6 +13,25 @@
   background-color: #007acc;
 }
 
+.toolbar {
+  display: flex;
+  justify-content: center;
+  padding: 1rem;
+  background-color: #333;
+}
+
+.import-button {
+  background-color: #007acc;
+  color: white;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.import-button input {
+  display: none;
+}
+
 .editors-wrapper {
   display: flex;
   flex-direction: row;

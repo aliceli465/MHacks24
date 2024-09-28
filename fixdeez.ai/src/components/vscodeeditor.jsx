@@ -1,24 +1,22 @@
-import React, { useState } from "react";
+import React from "react";
 import Editor from "@monaco-editor/react";
 
 const VscodeEditor = ({ code }) => {
-  const [currentCode, setCurrentCode] = useState(code);
-
   return (
     <div style={{ height: "90vh", width: "100%", backgroundColor: "#1E1E1E" }}>
       <Editor
-        height="90vh"
+        height="100%"
         defaultLanguage="c"
-        value={currentCode}
+        value={code}
         theme="vs-dark"
         options={{
+          readOnly: true, // Set the editor to be read-only
           fontFamily: "Fira Code, monospace",
           fontSize: 14,
           scrollBeyondLastLine: false,
           minimap: { enabled: false },
           lineNumbers: "on",
         }}
-        onChange={(value) => setCurrentCode(value)}
       />
     </div>
   );
