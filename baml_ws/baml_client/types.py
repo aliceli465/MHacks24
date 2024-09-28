@@ -23,6 +23,8 @@ class Function(BaseModel):
     
     
     func_signature: str
+    func_sig_starting_line: int
+    func_bracket_end_line: int
     func_body_wo_brackets: str
     func_subcalls: List[str]
 
