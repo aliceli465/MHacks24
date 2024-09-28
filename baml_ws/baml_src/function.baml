@@ -5,6 +5,8 @@ class Functions {
 
 class Function {
   func_signature string
+  func_sig_starting_line int
+  func_bracket_end_line int
   func_body_wo_brackets string
   func_subcalls string[]
 }

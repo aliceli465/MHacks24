@@ -32,6 +32,8 @@ class Function(BaseModel):
     
     
     func_signature: Optional[str] = None
+    func_sig_starting_line: Optional[int] = None
+    func_bracket_end_line: Optional[int] = None
     func_body_wo_brackets: Optional[str] = None
     func_subcalls: List[Optional[str]]
 
