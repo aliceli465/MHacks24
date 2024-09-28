@@ -1,15 +1,33 @@
 import React, { useState, useEffect, useRef } from "react";
 import Editor from "@monaco-editor/react";
+import MouseTracker from "./MouseTracker";
 
-const VscodeEditor = ({ code }) => {
+const VscodeEditor = ({ code, onFunctionDetailsChange }) => {
   const editorRef = useRef(null);
   const monacoRef = useRef(null);
 
-  // Generate a random light color
-  const generateLightColor = () => {
-    const hue = Math.floor(Math.random() * 360);
-    return `hsl(${hue}, 70%, 85%)`;
-  };
+  const functionInfos = [
+    {
+      startLine: 3,
+      endLine: 6,
+      text: "function 1",
+    },
+    {
+      startLine: 10,
+      endLine: 13,
+      text: "function 2",
+    },
+    {
+      startLine: 15,
+      endLine: 18,
+      text: "function 3",
+    },
+    {
+      startLine: 20,
+      endLine: 23,
+      text: "function 4",
+    },
+  ];
 
   // This function is called when the editor mounts
   const handleEditorDidMount = (editor, monaco) => {
@@ -64,12 +82,13 @@ const VscodeEditor = ({ code }) => {
     return randomColor;
   };
 
-  // Extract function ranges from code
+  // Modify this function to return the needed information
   const extractFunctionRanges = (code, monaco) => {
     const regex =
       /([a-zA-Z_][a-zA-Z0-9_]*\s+[a-zA-Z_][a-zA-Z0-9_]*\s*\([^)]*\)\s*\{)/g;
     const lines = code.split("\n");
     const decorations = [];
+    const functionDetails = []; // Array to hold function details
     let match;
 
     // Remove existing styles for previous highlights
@@ -115,25 +134,39 @@ const VscodeEditor = ({ code }) => {
       .${className} { background-color: ${color}; color: #000000 !important; }
     `;
       document.head.appendChild(styleTag);
+
+      // Get the entire source code for the function
+      const functionSrc = lines.slice(startLine - 1, endLine).join("\n");
+
+      // Push the function details into the array
+      functionDetails.push({
+        name: match[0].split("(")[0].trim(), // Extract function name from the match
+        src: functionSrc,
+        color: color,
+      });
     }
 
-    return decorations;
+    return { decorations, functionDetails }; // Return both decorations and function details
   };
 
-  // Function to apply highlights
+  // Function to apply highlights and return function details
   const highlightCode = (editor, monaco) => {
     const model = editor.getModel(); // Get the model from the editor
-    const lineCount = model.getLineCount(); // Get the number of lines in the model
 
     // Clear existing decorations
     editor.deltaDecorations([], []);
 
     // Extract function ranges and apply highlights
-    const functionDecorations = extractFunctionRanges(code, monaco);
-    functionDecorations.forEach((decoration) => {
+    const { decorations, functionDetails } = extractFunctionRanges(
+      code,
+      monaco
+    );
+    decorations.forEach((decoration) => {
       // Add the decoration for the function
       editor.deltaDecorations([], [decoration]);
     });
+
+    onFunctionDetailsChange(functionDetails);
   };
 
   useEffect(() => {
