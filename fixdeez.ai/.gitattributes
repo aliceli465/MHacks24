@@ -1,13 +1,11 @@
-# Set the default behavior to automatically normalize line endings
+# Set default behavior to automatically normalize line endings.
 * text=auto
 
-# For specific file types
+# Specify file types for consistent line endings.
+*.c text
+*.cpp text
+*.h text
 *.js text
+*.jsx text
 *.css text
-*.html text
-*.json text
-
-# Binary files
-*.png binary
-*.jpg binary
-*.gif binary
+*.md text
