@@ -48,3 +48,20 @@ body {
 .comment {
   color: #6a9955;
 }
+
+/* Highlighted Text Colors - Darker Equivalents */
+.code-highlighted {
+  color: #1e1e1e; /* Darker text for highlighted code */
+}
+
+.keyword-highlighted {
+  color: #142949; /* Darker color for keywords */
+}
+
+.variable-highlighted {
+  color: #314958; /* Darker color for variables */
+}
+
+.comment-highlighted {
+  color: #223930; /* Darker color for comments */
+}
