@@ -1,0 +1,45 @@
+body {
+  font-family: "Fira Code", monospace;
+  background-color: #1e1e1e;
+  color: #d4d4d4;
+  margin: 0;
+  padding: 0;
+}
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+.header {
+  background-color: #007acc;
+  padding: 10px;
+  color: white;
+  text-align: center;
+  width: 100%;
+}
+
+.editors-wrapper {
+  display: flex;
+  justify-content: space-between;
+  width: 80%; /* Controls the width of the editors container */
+  max-width: 1200px; /* Limits the maximum width */
+  margin-top: 20px;
+}
+
+.editor-half {
+  flex: 1;
+  margin: 0 10px; /* Adds space between the two editors */
+  border-radius: 10px; /* Rounded borders */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Adds a subtle shadow */
+  overflow: hidden;
+  border: 1px solid #333;
+  background-color: #1e1e1e;
+}
+
+.editor-half div {
+  height: 400px; /* Fixed height of each editor */
+}

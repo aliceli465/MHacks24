@@ -1,0 +1,50 @@
+body {
+  font-family: "Fira Code", monospace;
+  background-color: #1e1e1e;
+  color: #d4d4d4;
+  margin: 0;
+  padding: 0;
+}
+
+.header {
+  background-color: #007acc;
+  padding: 10px;
+  color: white;
+  text-align: center;
+}
+
+.editor-container {
+  display: flex;
+  height: 90vh;
+}
+
+.sidebar {
+  width: 15%;
+  background-color: #252526;
+  padding: 10px;
+}
+
+.editor {
+  width: 85%;
+  background-color: #1e1e1e;
+  padding: 20px;
+  overflow-y: auto;
+  color: #d4d4d4;
+}
+
+.code {
+  color: #d4d4d4;
+  font-family: "Fira Code", monospace;
+}
+
+.keyword {
+  color: #569cd6;
+}
+
+.variable {
+  color: #9cdcfe;
+}
+
+.comment {
+  color: #6a9955;
+}
