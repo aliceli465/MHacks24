@@ -7,7 +7,7 @@
 ==12== 
 ==12== HEAP SUMMARY:
 ==12==     in use at exit: 0 bytes in 0 blocks
-==12==   total heap usage: 3 allocs, 3 frees, 5,144 bytes allocated
+==12==   total heap usage: 1 allocs, 1 frees, 4,096 bytes allocated
 ==12== 
 ==12== All heap blocks were freed -- no leaks are possible
 ==12== 

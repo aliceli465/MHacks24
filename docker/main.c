@@ -1,129 +1,62 @@
 #include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 
-// Define some basic instructions for the VM
-enum {
-    HALT,    // Stop execution
-    PUSH,    // Push a value onto the stack
-    POP,     // Pop a value from the stack
-    ADD,     // Add two values
-    SUB,     // Subtract two values
-    MUL,     // Multiply two values
-    DIV      // Divide two values
-};
-
-// Virtual Machine state
-typedef struct {
-    int *stack;        // Stack memory
-    int sp;            // Stack pointer (top of the stack)
-    int ip;            // Instruction pointer
-    int running;       // Is the VM running?
-} VM;
-
-// Initialize the VM
-VM* init_vm(int stack_size) {
-    VM* vm = (VM*)malloc(sizeof(VM));
-    vm->stack = (int*)malloc(sizeof(int) * stack_size);
-    vm->sp = -1;
-    vm->ip = 0;
-    vm->running = 1;
-    return vm;
+// Recursive Fibonacci function (inefficient for large n)
+int fibonacci(int n) {
+    if (n <= 1) return n;
+    else return fibonacci(n - 1) + fibonacci(n - 2);
 }
 
-// Free the VM's resources
-void free_vm(VM* vm) {
-    free(vm->stack);
-    free(vm);
-}
-
-// Push a value onto the stack
-void push(VM *vm, int value) {
-    vm->stack[++vm->sp] = value;
-}
-
-// Pop a value from the stack
-int pop(VM *vm) {
-    if (vm->sp == -1) {
-        printf("Stack underflow\n");
-        exit(1);
+// Inefficient prime checking function
+int is_prime(int n) {
+    if (n <= 1) return 0;
+    int i;
+    for (i = 2; i < n; i++) { // Checks all numbers up to n-1
+        if (n % i == 0) return 0;
     }
-    return vm->stack[vm->sp--];
+    return 1;
 }
 
-// Execute a single instruction
-void execute(VM *vm, int *program) {
-    switch (program[vm->ip]) {
-        case HALT:
-            vm->running = 0;
-            break;
-        case PUSH:
-            push(vm, program[++vm->ip]);
-            break;
-        case POP:
-            printf("Popped: %d\n", pop(vm));
-            break;
-        case ADD: {
-            int b = pop(vm);
-            int a = pop(vm);
-            push(vm, a + b);
-            break;
-        }
-        case SUB: {
-            int b = pop(vm);
-            int a = pop(vm);
-            push(vm, a - b);
-            break;
-        }
-        case MUL: {
-            int b = pop(vm);
-            int a = pop(vm);
-            push(vm, a * b);
-            break;
-        }
-        case DIV: {
-            int b = pop(vm);
-            if (b == 0) {
-                printf("Division by zero\n");
-                exit(1);
-            }
-            int a = pop(vm);
-            push(vm, a / b);
-            break;
-        }
-        default:
-            printf("Unknown instruction: %d\n", program[vm->ip]);
-            exit(1);
+// Slow multiplication via repeated addition
+int slow_multiply(int a, int b) {
+    int result = 0, i;
+    for (i = 0; i < b; i++) {
+        result += a;
     }
-    vm->ip++;
+    return result;
 }
 
-// Run the program
-void run(VM *vm, int *program) {
-    while (vm->running) {
-        execute(vm, program);
+// Function to waste time with nested loops
+void waste_time() {
+    int i, j;
+    long sum = 0;
+    for (i = 0; i < 10000; i++) {
+        for (j = 0; j < 10000; j++) {
+            sum += i * j;
+        }
     }
+    printf("Sum in waste_time: %ld\n", sum);
 }
 
 int main() {
-    // Example program: Push 2 and 3, add them, pop the result
-    int program[] = {
-        PUSH, 2,
-        PUSH, 3,
-        ADD,
-        POP,
-        HALT
-    };
+    // Calculate a large Fibonacci number
+    int n = 40; // Adjust n for longer computation times
+    int fib_n = fibonacci(n);
+    printf("Fibonacci(%d) = %d\n", n, fib_n);
 
-    // Initialize the VM with a stack size of 256
-    VM *vm = init_vm(256);
+    // Check if a large number is prime
+    int num = 10000019;
+    if (is_prime(num)) {
+        printf("%d is prime\n", num);
+    } else {
+        printf("%d is not prime\n", num);
+    }
 
-    // Run the program
-    run(vm, program);
+    // Perform slow multiplication
+    int result = slow_multiply(12345, 6789);
+    printf("Result of slow multiplication: %d\n", result);
 
-    // Free resources
-    free_vm(vm);
+    // Waste time with nested loops
+    waste_time();
 
     return 0;
 }
-
