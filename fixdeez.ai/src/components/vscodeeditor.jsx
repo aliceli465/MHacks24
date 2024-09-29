@@ -7,10 +7,12 @@ const VscodeEditor = ({ code, onFunctionDetailsChange, functionData }) => {
   const monacoRef = useRef(null);
 
   // This function is called when the editor mounts
-  const handleEditorDidMount = (editor, monaco) => {
+  const handleEditorDidMount = (editor, monaco, functionData) => {
     editorRef.current = editor; // Keep a reference to the editor
     monacoRef.current = monaco; // Keep a reference to monaco
-    highlightCode(editor, monaco); // Highlight the code initially
+    //highlightCode(editor, monaco); // Highlight the code initially
+    console.log("function data is: ");
+    console.log(functionData);
   };
 
   const colorPool = [
@@ -59,45 +61,33 @@ const VscodeEditor = ({ code, onFunctionDetailsChange, functionData }) => {
     return randomColor;
   };
 
-  // Modify this function to return the needed information
-  const extractFunctionRanges = (code, monaco) => {
-    const regex =
-      /([a-zA-Z_][a-zA-Z0-9_]*\s+[a-zA-Z_][a-zA-Z0-9_]*\s*\([^)]*\)\s*\{)/g;
-    const lines = code.split("\n");
+  const extractFunctionRanges = (functionData, monaco) => {
+    console.log("function data is:");
+    console.log(functionData);
     const decorations = [];
     const functionDetails = []; // Array to hold function details
-    let match;
 
     // Remove existing styles for previous highlights
     const existingStyles = document.querySelectorAll(
       ".function-highlight-style"
     );
-    existingStyles.forEach((style) => style.remove());
+    if (existingStyles) {
+      existingStyles.forEach((style) => style.remove());
+    }
 
-    while ((match = regex.exec(code)) !== null) {
-      const startLine = code.substring(0, match.index).split("\n").length;
+    // Iterate over functionData to create decorations
+    functionData.forEach((func, index) => {
+      const color = getRandomColor(); // Get a random color for this function
+      const className = `highlight-code-${index}`; // Unique class for this function
 
-      // Now find where the function ends (find corresponding closing brace)
-      let braceCount = 0;
-      let endLine = startLine;
-
-      for (let i = startLine - 1; i < lines.length; i++) {
-        braceCount += (lines[i].match(/{/g) || []).length;
-        braceCount -= (lines[i].match(/}/g) || []).length;
-
-        if (braceCount === 0) {
-          endLine = i + 1;
-          break;
-        }
-      }
-
-      // Get a random color for this function
-      const color = getRandomColor();
-      const className = `highlight-code-${decorations.length}`; // Unique class for this function
-
-      // Add decoration for this function with the randomly generated color
+      // Create the decoration for the function
       decorations.push({
-        range: new monaco.Range(startLine, 1, endLine, 1),
+        range: new monaco.Range(
+          func.func_sig_starting_line,
+          1,
+          func.func_bracket_end_line + 1,
+          1
+        ),
         options: {
           inlineClassName: className, // Apply a unique class for this function
           isWholeLine: true,
@@ -108,26 +98,23 @@ const VscodeEditor = ({ code, onFunctionDetailsChange, functionData }) => {
       const styleTag = document.createElement("style");
       styleTag.className = "function-highlight-style"; // To identify these styles later
       styleTag.innerHTML = `
-      .${className} { background-color: ${color}; color: #000000 !important; }
-    `;
+        .${className} { background-color: ${color}; color: #000000 !important; }
+      `;
       document.head.appendChild(styleTag);
-
-      // Get the entire source code for the function
-      const functionSrc = lines.slice(startLine - 1, endLine).join("\n");
 
       // Push the function details into the array
       functionDetails.push({
-        name: match[0].split("(")[0].trim(), // Extract function name from the match
-        src: functionSrc,
+        name: func.func_signature, // Extract function name from signature
+        src: func.func_body_wo_brackets, // Assuming this is the source code without brackets
         color: color,
       });
-    }
+    });
 
     return { decorations, functionDetails }; // Return both decorations and function details
   };
 
   // Function to apply highlights and return function details
-  const highlightCode = (editor, monaco) => {
+  const highlightCode = (editor, monaco, functionData) => {
     const model = editor.getModel(); // Get the model from the editor
 
     // Clear existing decorations
@@ -135,7 +122,7 @@ const VscodeEditor = ({ code, onFunctionDetailsChange, functionData }) => {
 
     // Extract function ranges and apply highlights
     const { decorations, functionDetails } = extractFunctionRanges(
-      code,
+      functionData,
       monaco
     );
     decorations.forEach((decoration) => {
@@ -149,9 +136,9 @@ const VscodeEditor = ({ code, onFunctionDetailsChange, functionData }) => {
   useEffect(() => {
     // Apply highlights whenever code changes
     if (editorRef.current && monacoRef.current) {
-      highlightCode(editorRef.current, monacoRef.current);
+      highlightCode(editorRef.current, monacoRef.current, functionData);
     }
-  }, [code]); // Listen to changes in code
+  }, [code, functionData]); // Listen to changes in code
 
   return (
     <div style={{ height: "90vh", width: "100%", backgroundColor: "#1E1E1E" }}>

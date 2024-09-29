@@ -32,12 +32,11 @@ const App = () => {
             body: JSON.stringify({ content: fileContent }),
           });
 
-          console.log("response is: ");
-          console.log(response);
-
           const data = await response.json();
-          setFunctionData(data);
-          console.log(data);
+          const allFunctions = data.result.all_functions;
+          console.log("allFunctions is:");
+          console.log(allFunctions);
+          setFunctionData(allFunctions);
         } catch (error) {
           console.error("found error: ", error);
         }
@@ -50,7 +49,7 @@ const App = () => {
       if (targetDiv) {
         targetDiv.scrollIntoView({ behavior: "smooth" });
       }
-    }, 300);
+    }, 4000);
   };
 
   return (
