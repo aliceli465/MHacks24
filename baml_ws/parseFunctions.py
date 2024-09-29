@@ -51,15 +51,15 @@ def build_dependency_tree(function_map: Dict[str, List[str]], func_name: str) ->
             for subcall in function_map[key]:
                 if (subcall == key):
                     subcalls.append({
-                        "function_name": key + "...",
-                        "subcalls": []
+                        "name": key + "...",
+                        "children": []
                     })
                 else:
                     subcalls.append(build_dependency_tree(function_map, subcall))
 
             return {
-                    "function_name": key,
-                    "subcalls": subcalls
+                    "name": key,
+                    "children": subcalls
             }
     return {}
 
