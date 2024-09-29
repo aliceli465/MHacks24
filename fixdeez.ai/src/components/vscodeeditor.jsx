@@ -78,8 +78,8 @@ const VscodeEditor = ({ code, onFunctionDetailsChange, functionData }) => {
       const color = getRandomColor(); // Get a random color for this function
       const className = `highlight-code-${index}`; // Unique class for this function
 
-      var bounds = findFunctionBounds(code, func.func_signature.match(/ [^(]*/))
-      console.log("The name: " + func.func_signature.match(/ [^(]*/))
+      var bounds = findFunctionBounds(code, extractFunctionName(func.func_signature))
+      console.log("The name: " + extractFunctionName(func.func_signature))
       console.log("The bounds: " + bounds.start + " and " + bounds.end)
 
       // Create the decoration for the function
@@ -204,6 +204,13 @@ function findFunctionBounds(code, functionName) {
     }
 
     return null;  // Function not found
+}
+
+function extractFunctionName(signature) {
+    // Regular expression to match the function name, ignoring pointer symbols
+    const regex = /(?:[^\s*]*\s+)*([^\s(*]+)\s*\(/; // Matches return type and captures the function name without pointer symbols
+    const match = signature.match(regex);
+    return match ? match[1] : null; // Return the function name or null if not found
 }
 
 export default VscodeEditor;
