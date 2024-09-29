@@ -40,8 +40,8 @@ const App = () => {
             body: JSON.stringify({ content: fileContent}),
           });
 
-          const responseData = await response2.json();
-          const dep_tree = JSON.parse(responseData.dep_tree);
+          const data = await response2.json();
+          const dep_tree = JSON.parse(data.dep_tree);
           setDepTree(dep_tree);
 
           const valgrindResponse = await fetch(
@@ -60,7 +60,6 @@ const App = () => {
           const valOutput = val.valgrind_output;
           setValgrindOutput(valOutput);
 
-          const data = await response2.json();
           const allFunctions = data.result.all_functions;
           console.log("allFunctions is:");
           console.log(allFunctions);
