@@ -30,7 +30,7 @@ function ExtractFunctions(fn: string) -> Functions {
 function OptimizationSummary(fn_body: string) -> OpCodes {
   client "openai/gpt-4o" //
   prompt #"
-    The following function may be inefficient. Suggest any optimizations to decrease the runtime. If there are no optimizations to be made, say 'No optimizations.' Do not rewrite newlines. Leave escapes as is, do not escape \ or backslash
+    The following function may be inefficient. Suggest any optimizations to decrease the runtime. If there are no optimizations to be made, return code as is. Do not rewrite newlines. Leave escapes as is, do not escape \ or backslash
     Function:
     {{fn_body}}
     
