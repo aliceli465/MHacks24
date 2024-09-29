@@ -78,74 +78,74 @@ def dependency_tree(response: Functions) -> str:
     return json.dumps(tree_root, indent=2) 
 
 
-# def main():
-#     (example_stream(
-# """
-# #include "stdio.h"
-# #include "stdlib.h"
+def main():
+    (example(
+"""
+#include "stdio.h"
+#include "stdlib.h"
 
-# typedef struct NODE {
-#     int value;
-#     struct NODE* left;
-#     struct NODE* right;
-# } NODE;
+typedef struct NODE {
+    int value;
+    struct NODE* left;
+    struct NODE* right;
+} NODE;
 
-# void bruh() {
-# }
+void bruh() {
+}
 
-# int nodes(NODE* root) {
-#     int sum = 0;
-#     int count = 0;
-#     if(root==NULL)return 0;
-#     if(root->left == NULL && root->right == NULL)return 0;
+int nodes(NODE* root) {
+    int sum = 0;
+    int count = 0;
+    if(root==NULL)return 0;
+    if(root->left == NULL && root->right == NULL)return 0;
 
-#     sum += root->value;
-#     sum += nodes(root->left);
-#     sum += nodes(root->right);
-#     /*count++;
-#     count += nodes(root->left);
-#     count += nodes(root->right);*/
-#     return sum;
-# }
+    sum += root->value;
+    sum += nodes(root->left);
+    sum += nodes(root->right);
+    /*count++;
+    count += nodes(root->left);
+    count += nodes(root->right);*/
+    return sum;
+}
 
-# int isOddON(int num) {
-#     int isOdd = 0;
-#     while(num != 0) {
-#         num--;
-#         isOdd ^= isOdd;
-#     }
-#     return isOdd;
-# }
+int isOddON(int num) {
+    int isOdd = 0;
+    while(num != 0) {
+        num--;
+        isOdd ^= isOdd;
+    }
+    return isOdd;
+}
 
-# int isOddO1(int num) {
-#     switch(num) {
-#         case 0:
-#         return 0;
-#         case 1:
-#         return 1;
-#         case 2:
-#         return 0;
-#         case 3:
-#         return 1;
-#         default:
-#         return 0;
-#     }
-# }
+int isOddO1(int num) {
+    switch(num) {
+        case 0:
+        return 0;
+        case 1:
+        return 1;
+        case 2:
+        return 0;
+        case 3:
+        return 1;
+        default:
+        return 0;
+    }
+}
 
-# int isOddO2(int num) {
-#     if(num == 0) {
-#         return 0;
-#     }
-#     else if(num == 1) {
-#         return 1;
-#     }
-#     else if(num == 2) {
-#         return 0;
-#     }
-#     return 0;
-# }
+int isOddO2(int num) {
+    if(num == 0) {
+        return 0;
+    }
+    else if(num == 1) {
+        return 1;
+    }
+    else if(num == 2) {
+        return 0;
+    }
+    return 0;
+}
 
-# """))
+"""))
 
 
 # if __name__ == "__main__":
