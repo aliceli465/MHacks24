@@ -8,10 +8,10 @@ def parseFunctions(raw_resume: str) -> Functions:
     # BAML's internal parser guarantees ExtractResume
     # to be always return a Resume type
     response = b.ExtractFunctions(raw_resume)
-    print("DEPENDENCY TREE:");
-    print(dependency_tree(response));
-    print("END DEPENDENCY TREE");
-    return response.dict()
+    print("DEPENDENCY TREE:")
+    dep_tree = dependency_tree(response)
+    print("END DEPENDENCY TREE")
+    return response.dict(), dep_tree
     
 
 

@@ -25,8 +25,7 @@ const dependencyTree = {
   ],
 };
 
-const DependencyGraph = () => {
-  // Define the styles for nodes
+const DependencyGraph = ({ depTree }) => {
   const nodeSize = { x: 200, y: 100 };
 
   const renderCustomNode = ({ nodeData }) => {
@@ -42,12 +41,16 @@ const DependencyGraph = () => {
 
   return (
     <div style={{ height: "500px" }}>
-      <Tree
-        data={dependencyTree}
-        renderCustomNode={renderCustomNode}
-        nodeSize={nodeSize}
-        translate={{ x: 400, y: 50 }} // Adjust the position as needed
-      />
+      {depTree ? (
+        <Tree
+          data={depTree}
+          renderCustomNode={renderCustomNode}
+          nodeSize={nodeSize}
+          translate={{ x: 400, y: 50 }} // Adjust the position as needed
+        />
+      ) : (
+        <p>Loading dependency graph...</p>
+      )}
     </div>
   );
 };
