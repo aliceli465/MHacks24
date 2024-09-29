@@ -25,12 +25,12 @@ def getFunctions():
         data = request.json.get('content')
         print(data)
         print("------------------------------------")
-        arr = parseFunctions(data)
+        arr, dep_tree = parseFunctions(data)
         print("arr type is: ")
         print(type(arr))
         print("arr[all_functions] actually is: " )
         print(arr["all_functions"])
-        return jsonify({"result": arr})
+        return jsonify({"result": arr, "dep_tree": dep_tree})
 
     except Exception as e:
         print(f"Error: {e}")  # Print the error message

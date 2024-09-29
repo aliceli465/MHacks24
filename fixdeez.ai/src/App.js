@@ -17,6 +17,7 @@ const App = () => {
   const [isFeedbackDone, setIsFeedbackDone] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [valgrindOutput, setValgrindOutput] = useState("");
+  const [depTree, setDepTree] = useState(null);
 
   const handleFunctionDetailsChange = (details) => {
     setFunctionDetails(details);
@@ -36,8 +37,12 @@ const App = () => {
             headers: {
               "Content-Type": "application/json",
             },
-            body: JSON.stringify({ content: fileContent }),
+            body: JSON.stringify({ content: fileContent}),
           });
+
+          const responseData = await response2.json();
+          const dep_tree = JSON.parse(responseData.dep_tree);
+          setDepTree(dep_tree);
 
           const valgrindResponse = await fetch(
             "http://127.0.0.1:5000/save-and-run-valgrind",
@@ -162,7 +167,7 @@ const App = () => {
           {activeDiv === "div1" && <div className="content">This is Div 1</div>}
           {activeDiv === "div2" && (
             <div className="content">
-              <DependencyGraph />
+              <DependencyGraph depTree={depTree} />
             </div>
           )}
           {activeDiv === "div3" && <div className="content">This is Div 3</div>}
