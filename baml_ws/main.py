@@ -18,7 +18,7 @@ def OpFunctions(raw: str, other: str) -> str:
 
 def main():
     tmp = str()
-    with open("./camelCase.c") as t:
+    with open("./main.c") as t:
         tmp = t.read()
     funcs = extractFuncs(tmp)
     for i in funcs["all_functions"]:
