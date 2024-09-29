@@ -114,11 +114,8 @@
 }
 
 .right-container {
-  width: 45%;
-  border: 1px solid #ddd; /* Optional border */
+  width: 50%;
   text-align: center;
-  background-color: white;
-  max-height: 500px;
 }
 
 .ugh {
@@ -163,4 +160,28 @@
 .content {
   font-size: 18px; /* Font size for content */
   text-align: center; /* Center text */
+  display: flex;
+  justify-content: center;
+}
+
+.loading {
+  font-size: 24px; /* Adjust font size as needed */
+  color: #007bff; /* Initial color */
+  animation: pulse 1.5s infinite; /* Apply animation */
+}
+
+/* Keyframes for the pulse animation */
+@keyframes pulse {
+  0% {
+    color: #007bff; /* Initial color */
+    transform: scale(1); /* Initial scale */
+  }
+  50% {
+    color: #00aaff; /* Lighter blue */
+    transform: scale(1.1); /* Slightly larger */
+  }
+  100% {
+    color: #007bff; /* Back to initial color */
+    transform: scale(1); /* Back to original size */
+  }
 }
