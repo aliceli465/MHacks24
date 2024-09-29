@@ -41,3 +41,15 @@ class Functions(BaseModel):
     
     
     all_functions: List["Function"]
+
+class RT(BaseModel):
+    
+    
+    all_functions: List["RTF"]
+
+class RTF(BaseModel):
+    
+    
+    func_signature: Optional[str] = None
+    CPU_percentage: Optional[float] = None
+    runtime_percentage: Optional[float] = None

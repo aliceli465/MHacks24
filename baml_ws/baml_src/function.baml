@@ -11,6 +11,16 @@ class Function {
   func_subcalls string[]
 }
 
+class RT {
+  all_functions RTF[]
+}
+
+class RTF {
+  func_signature string
+  CPU_percentage float
+  runtime_percentage float
+}
+
 // Creating a function to extract the resume from a string.
 function ExtractFunctions(fn: string) -> Functions {
   client "openai/gpt-4o" // Set OPENAI_API_KEY to use this client.
@@ -22,22 +32,12 @@ function ExtractFunctions(fn: string) -> Functions {
   "#
 }
 
-// Testing the function with a sample resume.
-test vaibhav_resume {
-  functions [ExtractFunctions]
-  args {
-    resume #"
-      Vaibhav Gupta
-      vbv@boundaryml.com
+function ExtractRuntimes(fn: string) -> RT {
+    client "openai/gpt-4o"
+    prompt #"
+    Extract from this content:
+    {{ fn }}
 
-      Experience:
-      - Founder at BoundaryML
-      - CV Engineer at Google
-      - CV Engineer at Microsoft
-
-      Skills:
-      - Rust
-      - C++
-    "#
-  }
+    {{ ctx.output_format }}
+  "#
 }
