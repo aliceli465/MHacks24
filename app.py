@@ -5,6 +5,8 @@ import dotenv
 from dotenv import load_dotenv
 sys.path.append(os.path.abspath('baml_ws'))
 
+import subprocess
+
 
 from parseFunctions import parseFunctions
 from flask import Flask, request, jsonify
@@ -75,16 +77,76 @@ def getFeedback():
 
             feedback_array.append(fed)
     
-        for x in feedback_array:
-            print("-------------------------------------------------------")
-            print(type(x))
-            print(x)
-            print("-------------------------------------------------------")
+        # for x in feedback_array:
+        #     print("-------------------------------------------------------")
+        #     print(type(x))
+        #     print(x)
+        #     print("-------------------------------------------------------")
         return jsonify(feedback_array)
 
     except Exception as e:
         print(f"Error: {e}")
         return jsonify({"error": str(e)}), 500
+
+
+SAVE_FOLDER = './'
+os.makedirs(SAVE_FOLDER, exist_ok=True)
+
+@app.route('/save-and-run-valgrind', methods=['POST'])
+def save_and_run_valgrind():
+    data = request.get_json()
+    filename = data.get('filename')
+    file_content = data.get('content')
+    
+    if not filename or not file_content:
+        return jsonify({'error': 'Invalid file or content'}), 400
+    
+    # Save the file to the same directory as app.py
+    file_path = os.path.join(SAVE_FOLDER, filename)
+    try:
+        with open(file_path, 'w') as f:
+            f.write(file_content)
+        
+        # Compile the C file
+        executable_path = compile_c_file(file_path)
+        if not executable_path:
+            return jsonify({'error': 'Compilation failed'}), 500
+        print("our output path is: ")
+        print(executable_path)
+        # Run Valgrind on the compiled executable
+        valgrind_output = run_valgrind_on_executable(executable_path)
+        if valgrind_output:
+            print("heres the nice valgrind output: ")
+            print(valgrind_output)
+            return jsonify({'valgrind_output': valgrind_output})
+        else:
+            return jsonify({'error': 'Valgrind execution failed'}), 500
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+def compile_c_file(c_file_path):
+    output_file = 'main.exe'
+    try:
+        # Compile the C file using gcc
+        compile_cmd = f"gcc {c_file_path} -o {output_file}"
+        subprocess.run(compile_cmd, shell=True, check=True)
+        print("Compilation successful.")
+        return output_file
+    except subprocess.CalledProcessError:
+        print("Compilation failed.")
+        return None
+
+def run_valgrind_on_executable(executable_path):
+    try:
+        # Run Valgrind with memory leak check
+        valgrind_cmd = f"valgrind --leak-check=full main.exe"
+        result = subprocess.run(valgrind_cmd, shell=True, capture_output=True, text=True)
+        print("Valgrind executed successfully.")
+        print(result)
+        return result
+    except Exception as e:
+        print(f"Valgrind execution failed: {e}")
+        return None
 
 if __name__ == "__main__":
     app.run(debug=True)

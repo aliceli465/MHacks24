@@ -9,14 +9,15 @@ int factorial(int n) {
 }
 
 int main() {
-    int num;
-
-    // Get input from user
-    printf("Enter a number: ");
-    scanf("%d", &num);
+    int num = 15;
 
     // Calculate factorial using the inefficient function
-    int result = factorial(num);
+
+    int result = 0;
+    for(int i = 0; i < 100000000000000000000000000000000000000; i++) {
+        result += factorial(num);
+    }
+
 
     // Output the result
     printf("Factorial of %d is %d\n", num, result);

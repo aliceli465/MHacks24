@@ -57,7 +57,7 @@
   position: relative; /* Needed for dropdown positioning */
   transition: background-color 0.3s, transform 0.2s; /* Smooth transition */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add a subtle shadow for depth */
-  width: 30%;
+  width: 80%;
   margin-left: 3%;
   text-align: center;
   margin-bottom: 1%;
@@ -110,4 +110,57 @@
   flex-direction: column; /* Stack items in a column */
   gap: 10px; /* Add space between bubbles */
   padding: 10px; /* Optional padding for the container */
+  width: 50%;
+}
+
+.right-container {
+  width: 45%;
+  border: 1px solid #ddd; /* Optional border */
+  text-align: center;
+  background-color: white;
+  max-height: 500px;
+}
+
+.ugh {
+  width: 100%;
+  display: flex;
+}
+
+.button-row {
+  display: flex;
+  justify-content: center;
+  gap: 15px; /* Space between buttons */
+  margin-bottom: 20px; /* Space between buttons and content area */
+}
+
+.button {
+  padding: 15px 25px; /* Increased padding for a larger button */
+  border: none; /* Remove border */
+  border-radius: 25px; /* Fully rounded corners */
+  background-color: #89d7f8; /* Light blue background */
+  color: white; /* White text */
+  cursor: pointer; /* Pointer cursor on hover */
+  transition: background-color 0.3s ease; /* Transition for hover effect */
+  font-size: 16px; /* Adjust font size for readability */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+.button:hover {
+  background-color: #122e38; /* Slightly darker blue on hover */
+}
+
+.content-area {
+  width: 100%;
+  margin: auto;
+  max-width: 600px; /* Optional: limit the max width */
+  padding: 20px;
+  border: 1px solid #ddd; /* Light border */
+  border-radius: 10px; /* Rounded corners */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  background-color: #f9f9f9; /* Light background */
+}
+
+.content {
+  font-size: 18px; /* Font size for content */
+  text-align: center; /* Center text */
 }
