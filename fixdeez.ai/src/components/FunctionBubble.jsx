@@ -32,7 +32,7 @@ const FunctionBubble = ({ functionName, explanation, color }) => {
               zIndex: 1, // Ensure it appears above other elements
             }}
           >
-            <p>{explanation}</p>
+            <p style={{ whiteSpace: "pre-wrap" }}>{explanation}</p>
           </div>
         )}
       </div>

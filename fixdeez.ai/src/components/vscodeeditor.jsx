@@ -62,8 +62,6 @@ const VscodeEditor = ({ code, onFunctionDetailsChange, functionData }) => {
   };
 
   const extractFunctionRanges = (functionData, monaco) => {
-    console.log("function data is:");
-    console.log(functionData);
     const decorations = [];
     const functionDetails = []; // Array to hold function details
 
