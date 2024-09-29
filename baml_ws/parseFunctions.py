@@ -25,6 +25,7 @@ def example(raw_resume: str) -> Functions:
     final = stream.get_final_response()
     return final
 
+
 def preprocess_functions(functions: Functions) -> Dict[str, List[str]]:
     function_map = {}
     for function in functions.all_functions:

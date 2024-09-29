@@ -32,3 +32,9 @@ class Functions(BaseModel):
     
     
     all_functions: List["Function"]
+
+class OpCodes(BaseModel):
+    
+    
+    optimization_summary: str
+    newly_optimized_code: str

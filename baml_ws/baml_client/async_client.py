@@ -83,6 +83,30 @@ class BamlAsyncClient:
       mdl = create_model("ExtractFunctionsReturnType", inner=(types.Functions, ...))
       return coerce(mdl, raw.parsed())
     
+    async def OptimizationSummary(
+        self,
+        fn_body: str,
+        baml_options: BamlCallOptions = {},
+    ) -> types.OpCodes:
+      __tb__ = baml_options.get("tb", None)
+      if __tb__ is not None:
+        tb = __tb__._tb
+      else:
+        tb = None
+      __cr__ = baml_options.get("client_registry", None)
+
+      raw = await self.__runtime.call_function(
+        "OptimizationSummary",
+        {
+          "fn_body": fn_body,
+        },
+        self.__ctx_manager.get(),
+        tb,
+        __cr__,
+      )
+      mdl = create_model("OptimizationSummaryReturnType", inner=(types.OpCodes, ...))
+      return coerce(mdl, raw.parsed())
+    
 
 
 class BamlStreamClient:
@@ -121,6 +145,39 @@ class BamlStreamClient:
       partial_mdl = create_model("ExtractFunctionsPartialReturnType", inner=(partial_types.Functions, ...))
 
       return baml_py.BamlStream[partial_types.Functions, types.Functions](
+        raw,
+        lambda x: coerce(partial_mdl, x),
+        lambda x: coerce(mdl, x),
+        self.__ctx_manager.get(),
+      )
+    
+    def OptimizationSummary(
+        self,
+        fn_body: str,
+        baml_options: BamlCallOptions = {},
+    ) -> baml_py.BamlStream[partial_types.OpCodes, types.OpCodes]:
+      __tb__ = baml_options.get("tb", None)
+      if __tb__ is not None:
+        tb = __tb__._tb
+      else:
+        tb = None
+      __cr__ = baml_options.get("client_registry", None)
+
+      raw = self.__runtime.stream_function(
+        "OptimizationSummary",
+        {
+          "fn_body": fn_body,
+        },
+        None,
+        self.__ctx_manager.get(),
+        tb,
+        __cr__,
+      )
+
+      mdl = create_model("OptimizationSummaryReturnType", inner=(types.OpCodes, ...))
+      partial_mdl = create_model("OptimizationSummaryPartialReturnType", inner=(partial_types.OpCodes, ...))
+
+      return baml_py.BamlStream[partial_types.OpCodes, types.OpCodes](
         raw,
         lambda x: coerce(partial_mdl, x),
         lambda x: coerce(mdl, x),
