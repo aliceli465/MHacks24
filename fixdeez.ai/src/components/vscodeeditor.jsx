@@ -80,12 +80,16 @@ const VscodeEditor = ({ code, onFunctionDetailsChange, functionData }) => {
       const color = getRandomColor(); // Get a random color for this function
       const className = `highlight-code-${index}`; // Unique class for this function
 
+      var bounds = findFunctionBounds(code, func.func_signature.match(/ [^(]*/))
+      console.log("The name: " + func.func_signature.match(/ [^(]*/))
+      console.log("The bounds: " + bounds.start + " and " + bounds.end)
+
       // Create the decoration for the function
       decorations.push({
         range: new monaco.Range(
-          func.func_sig_starting_line,
+          bounds.start,
           1,
-          func.func_bracket_end_line + 1,
+          bounds.end + 1,
           1
         ),
         options: {
@@ -160,5 +164,48 @@ const VscodeEditor = ({ code, onFunctionDetailsChange, functionData }) => {
     </div>
   );
 };
+
+function findFunctionBounds(code, functionName) {
+    // Split the code into an array of lines
+    const lines = code.split('\n');
+
+    // Regex pattern to match the function signature
+    const pattern = new RegExp(`\\b${functionName}\\s*\\([^)]*\\)\\s*\\{`);
+
+    let startLine = null;
+    let endLine = null;
+    let braceCount = 0;
+
+    // Iterate over each line to find the start and end lines
+    for (let i = 0; i < lines.length; i++) {
+        const line = lines[i];
+
+        // Check if the line contains the function declaration
+        if (startLine === null && pattern.test(line)) {
+            startLine = i + 1;  // Line numbers are 1-based, so add 1
+            braceCount = (line.match(/\{/g) || []).length - (line.match(/\}/g) || []).length;
+        } else if (startLine !== null) {
+            // If we've already found the function start, track braces
+            braceCount += (line.match(/\{/g) || []).length;
+            braceCount -= (line.match(/\}/g) || []).length;
+
+            // If brace count reaches 0, we've found the end of the function
+            if (braceCount === 0) {
+                endLine = i + 1;  // Line numbers are 1-based, so add 1
+                break;
+            }
+        }
+    }
+
+    // If the function is found, return the start and end line numbers
+    if (startLine !== null && endLine !== null) {
+        return {
+            start: startLine,
+            end: endLine
+        };
+    }
+
+    return null;  // Function not found
+}
 
 export default VscodeEditor;
