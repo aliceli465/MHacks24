@@ -22,6 +22,19 @@ function ExtractFunctions(fn: string) -> Functions {
   "#
 }
 
+function OptimizationSummary(fn_body: string) -> string {
+  client "openai/gpt-4o" //
+  prompt #"
+    The following function may be inefficient. Suggest any optimizations to decrease the runtime. If there are no optimizations to be made, say 'No optimizations.'
+
+    {{fn_body}}
+
+    {{ ctx.output_format }}
+  "
+}
+
+
+
 // Testing the function with a sample resume.
 test vaibhav_resume {
   functions [ExtractFunctions]

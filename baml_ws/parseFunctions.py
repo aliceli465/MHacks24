@@ -20,6 +20,7 @@ def example(raw_resume: str) -> Functions:
     return final
 
 
+
 # def main():
 #     (example_stream(
 # """
