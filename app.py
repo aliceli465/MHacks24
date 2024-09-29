@@ -35,6 +35,49 @@ def getFunctions():
         print(f"Error: {e}")  # Print the error message
         return jsonify({"error": str(e)}), 500
 
+@app.route('/getSummaries', methods=['POST'])
+def getSummaries():
+    data = request.json.get('content')
+    summaries = []
+    try:
+        for func_info in data:
+            func_signature = func_info.get('func_signature', '')
+            func_sig_starting_line = func_info.get('func_sig_starting_line', '')
+            func_bracket_end_line = func_info.get('func_bracket_end_line', '')
+            func_body_wo_brackets = func_info.get('func_body_wo_brackets', '')
+            func_subcalls = func_info.get('func_subcalls', [])
+            
+            # Create the prompt to send to OpenAI
+            prompt = f"\n\n"
+            prompt += f"Function Signature: {func_signature}\n"
+            prompt += f"Signature Starting Line: {func_sig_starting_line}\n"
+            prompt += f"Bracket End Line: {func_bracket_end_line}\n"
+            prompt += f"Function Body: {func_body_wo_brackets}\n"
+            prompt += f"Subcalls: {', '.join(func_subcalls)}\n\n"
+
+            response = openai.ChatCompletion.create(
+                model="gpt-4o",
+                messages=[
+                    {"role": "system","content":"Give me a concise summary of what each function is doing (No introductory phrases like here you go or heres a summary)."},
+                    {"role": "user", "content": [{"type": "text", "text": prompt}]}
+                ],
+                max_tokens=300
+            )
+            fed = response['choices'][0]['message']['content']
+
+            summaries.append(fed)
+    
+        # for x in feedback_array:
+        #     print("-------------------------------------------------------")
+        #     print(type(x))
+        #     print(x)
+        #     print("-------------------------------------------------------")
+        return jsonify(summaries)
+
+    except Exception as e:
+        print(f"Error: {e}")
+        return jsonify({"error": str(e)}), 500
+
 @app.route('/getFeedback', methods=['POST'])
 def getFeedback():
     # in the format of [{info about func 1}, ...... {info about func n}]
@@ -57,18 +100,17 @@ def getFeedback():
             func_subcalls = func_info.get('func_subcalls', [])
             
             # Create the prompt to send to OpenAI
-            prompt = f"Use dashes as bullet points (string formatted) and green/red circles (with good/green points first, then red) and analyze the following function and provide feedback in terms of memory usage, how efficient it is, any syntax/convention. Just give me the feedback, nothing like certainly! heres your feedback.\n\n"
+            prompt = f"Do not give me a function summary.\n\n"
             prompt += f"Function Signature: {func_signature}\n"
             prompt += f"Signature Starting Line: {func_sig_starting_line}\n"
             prompt += f"Bracket End Line: {func_bracket_end_line}\n"
             prompt += f"Function Body: {func_body_wo_brackets}\n"
             prompt += f"Subcalls: {', '.join(func_subcalls)}\n\n"
-            prompt += " can be made?"
 
             response = openai.ChatCompletion.create(
                 model="gpt-4o",
                 messages=[
-                    {"role": "system","content":"You are helping somebody optimize their C code in terms of performance, memory usage, and syntax. Give concise feedback and compliments. Please also remove any symbols like * and ` but keep the green/red stuff"},
+                    {"role": "system","content":"You are helping somebody optimize their C code in terms of performance, memory usage, and syntax. Use dashes as bullet points (please add new lines since this will be going into html later) and green/red circles (with good/green points first, then red) and aanlyze these functions based on the below. Just give me feedback, nothing like certainly heres your feedback. Please make every function feedback the same format, and no code examples just suggestions."},
                     {"role": "user", "content": [{"type": "text", "text": prompt}]}
                 ],
                 max_tokens=300
