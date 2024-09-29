@@ -2,32 +2,9 @@ import React, { useState, useEffect, useRef } from "react";
 import Editor from "@monaco-editor/react";
 import MouseTracker from "./MouseTracker";
 
-const VscodeEditor = ({ code, onFunctionDetailsChange }) => {
+const VscodeEditor = ({ code, onFunctionDetailsChange, functionData }) => {
   const editorRef = useRef(null);
   const monacoRef = useRef(null);
-
-  const functionInfos = [
-    {
-      startLine: 3,
-      endLine: 6,
-      text: "function 1",
-    },
-    {
-      startLine: 10,
-      endLine: 13,
-      text: "function 2",
-    },
-    {
-      startLine: 15,
-      endLine: 18,
-      text: "function 3",
-    },
-    {
-      startLine: 20,
-      endLine: 23,
-      text: "function 4",
-    },
-  ];
 
   // This function is called when the editor mounts
   const handleEditorDidMount = (editor, monaco) => {

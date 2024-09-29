@@ -9,6 +9,7 @@ const pasta =
 const App = () => {
   const [fileContent, setFileContent] = useState("");
   const [functionDetails, setFunctionDetails] = useState([]);
+  const [functionData, setFunctionData] = useState([]);
 
   const handleFunctionDetailsChange = (details) => {
     setFunctionDetails(details);
@@ -18,7 +19,30 @@ const App = () => {
     const file = event.target.files[0];
     if (file) {
       const reader = new FileReader();
-      reader.onload = (e) => setFileContent(e.target.result);
+      reader.onload = async (e) => {
+        const fileContent = e.target.result;
+        setFileContent(fileContent);
+
+        try {
+          const response = await fetch("http://127.0.0.1:5000/getFunctions", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ content: fileContent }),
+          });
+
+          console.log("response is: ");
+          console.log(response);
+
+          const data = await response.json();
+          setFunctionData(data);
+          console.log(data);
+        } catch (error) {
+          console.error("found error: ", error);
+        }
+      };
+
       reader.readAsText(file);
     }
     setTimeout(() => {
@@ -50,6 +74,7 @@ const App = () => {
           <div className="editor-half">
             <VscodeEditor
               code={fileContent}
+              functionData={functionData}
               onFunctionDetailsChange={handleFunctionDetailsChange}
             />
           </div>
