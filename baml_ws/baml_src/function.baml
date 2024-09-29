@@ -11,6 +11,11 @@ class Function {
   func_subcalls string[]
 }
 
+class OpCodes {
+  optimization_summary string
+  newly_optimized_code string
+}
+
 // Creating a function to extract the resume from a string.
 function ExtractFunctions(fn: string) -> Functions {
   client "openai/gpt-4o" // Set OPENAI_API_KEY to use this client.
@@ -22,18 +27,17 @@ function ExtractFunctions(fn: string) -> Functions {
   "#
 }
 
-function OptimizationSummary(fn_body: string) -> string {
+function OptimizationSummary(fn_body: string) -> OpCodes {
   client "openai/gpt-4o" //
   prompt #"
-    The following function may be inefficient. Suggest any optimizations to decrease the runtime. If there are no optimizations to be made, say 'No optimizations.'
+    The following function may be inefficient. Suggest any optimizations to decrease the runtime. If there are no optimizations to be made, say 'No optimizations.' Do not rewrite newlines. Leave escapes as is, do not escape \ or backslash
     Function:
     {{fn_body}}
     
-    Summary:
+    Extract it into the following format
     {{ ctx.output_format }}
-  "
+  "#
 }
-
 
 
 // Testing the function with a sample resume.

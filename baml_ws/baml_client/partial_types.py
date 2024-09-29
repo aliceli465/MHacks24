@@ -41,3 +41,9 @@ class Functions(BaseModel):
     
     
     all_functions: List["Function"]
+
+class OpCodes(BaseModel):
+    
+    
+    optimization_summary: Optional[str] = None
+    newly_optimized_code: Optional[str] = None
