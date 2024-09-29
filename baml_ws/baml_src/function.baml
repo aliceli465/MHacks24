@@ -26,9 +26,10 @@ function OptimizationSummary(fn_body: string) -> string {
   client "openai/gpt-4o" //
   prompt #"
     The following function may be inefficient. Suggest any optimizations to decrease the runtime. If there are no optimizations to be made, say 'No optimizations.'
-
+    Function:
     {{fn_body}}
-
+    
+    Summary:
     {{ ctx.output_format }}
   "
 }
