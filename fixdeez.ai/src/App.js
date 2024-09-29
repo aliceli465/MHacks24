@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import VscodeEditor from "./components/VscodeEditor";
 import FunctionBubble from "./components/FunctionBubble";
 import DependencyGraph from "./components/dependencyGraph";
+import SimpleVscodeEditor from "./components/rawdog";
 import "./App.css"; // Custom styles
 
 const App = () => {
@@ -42,6 +43,23 @@ const App = () => {
             body: JSON.stringify({ content: fileContent}),
           });
 
+          const opt_code_resp = await fetch(
+            "http://127.0.0.1:5000/getOptimizedCode",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ content: fileContent }),
+            }
+          );
+
+          const opt_data = await opt_code_resp.json();
+          console.log("optimized code data is: ");
+          console.log(opt_data.newly_optimized_code);
+          const yay_code = opt_data.newly_optimized_code;
+          setOptimizedCode(yay_code);
+
           const data = await response2.json();
           const dep_tree = JSON.parse(data.dep_tree);
           setDepTree(dep_tree);
@@ -63,8 +81,6 @@ const App = () => {
           setValgrindOutput(valOutput);
 
           const allFunctions = data.result.all_functions;
-          console.log("allFunctions is:");
-          console.log(allFunctions);
           setFunctionData(allFunctions);
         } catch (error) {
           console.error("found error: ", error);
@@ -278,18 +294,11 @@ const App = () => {
                   style={{
                     flex: 1,
                     border: "1px solid #3c3c3c",
-                    width: "100px",
+                    width: "100px", // Consider using a more flexible width like "100%"
                     marginLeft: "2%",
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
                   }}
                 >
-                  <VscodeEditor
-                    code={fileContent}
-                    functionData={functionData}
-                    onFunctionDetailsChange={handleFunctionDetailsChange}
-                  />
+                  <SimpleVscodeEditor code={optimizedCode} />
                 </div>
               )}
             </div>

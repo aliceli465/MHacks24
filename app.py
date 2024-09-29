@@ -12,6 +12,7 @@ import subprocess
 from parseFunctions import parseFunctions
 from flask import Flask, request, jsonify
 from flask_cors import CORS
+from main import OpFunctions 
 
 app = Flask(__name__)
 CORS(app)
@@ -19,6 +20,16 @@ CORS(app)
 load_dotenv()
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
+@app.route('/getOptimizedCode', methods=['POST'])
+def getOptimizedCode():
+    try:   
+        data = request.json.get('content')
+        d = OpFunctions(data)
+        print(d)
+        return jsonify(d)
+    except Exception as e:
+        print(f"Error: {e}")  # Print the error message
+        return jsonify({"error": str(e)}), 500       
 @app.route('/getFunctions', methods=['POST'])
 def getFunctions():
     try:
