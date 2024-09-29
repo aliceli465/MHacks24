@@ -6,21 +6,34 @@ const dependencyTree = {
   name: "main",
   children: [
     {
+      name: "waste_time",
+      children: [
+        {
+          name: "printf",
+          children: [],
+        },
+      ],
+    },
+    {
+      name: "is_prime",
+      children: [],
+    },
+    {
+      name: "fibonacci",
+      children: [
+        {
+          name: "fibonacci...",
+          children: [],
+        },
+      ],
+    },
+    {
       name: "printf",
       children: [],
     },
     {
-      name: "scanf",
+      name: "slow_multiply",
       children: [],
-    },
-    {
-      name: "factorial",
-      children: [
-        {
-          name: "factorial...",
-          children: [],
-        },
-      ],
     },
   ],
 };
