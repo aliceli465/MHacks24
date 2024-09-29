@@ -2,6 +2,7 @@ import sys
 import os
 import openai 
 import dotenv
+import shutil
 from dotenv import load_dotenv
 sys.path.append(os.path.abspath('baml_ws'))
 
@@ -89,7 +90,7 @@ def getFeedback():
         return jsonify({"error": str(e)}), 500
 
 
-SAVE_FOLDER = './'
+SAVE_FOLDER = './C_File/'
 os.makedirs(SAVE_FOLDER, exist_ok=True)
 
 @app.route('/save-and-run-valgrind', methods=['POST'])
@@ -101,6 +102,10 @@ def save_and_run_valgrind():
     if not filename or not file_content:
         return jsonify({'error': 'Invalid file or content'}), 400
     
+    if os.path.exists(SAVE_FOLDER) and os.listdir(SAVE_FOLDER):
+        # Remove all files and folders inside the save folder
+        shutil.rmtree(SAVE_FOLDER)
+        os.makedirs(SAVE_FOLDER)
     # Save the file to the same directory as app.py
     file_path = os.path.join(SAVE_FOLDER, filename)
     try:
